@@ -4,6 +4,7 @@ from modules.docx_reader import extract_docx_text
 from modules.utils import extract_txt_text
 from modules.summarizer import summarize_document
 from modules.simplifier import simplify_document
+from modules.clause_explainer import explain_clauses
 
 # -----------------------------
 # Page Configuration
@@ -204,7 +205,38 @@ elif menu == "Simplify":
                 file_name="simplified_document.txt",
                 mime="text/plain"
             )
+elif menu == "Clause Explanation":
 
+    st.header("⚖️ Clause Explanation")
+
+    if "document_text" not in st.session_state:
+
+        st.warning("Please upload a document first.")
+
+    else:
+
+        if st.button("Explain Clauses"):
+
+            with st.spinner("Analyzing clauses..."):
+
+                explanation = explain_clauses(
+                    st.session_state["document_text"]
+                )
+
+                st.session_state["clause_explanation"] = explanation
+
+        if "clause_explanation" in st.session_state:
+
+            st.markdown(
+                st.session_state["clause_explanation"]
+            )
+
+            st.download_button(
+                "📥 Download Explanation",
+                st.session_state["clause_explanation"],
+                file_name="clause_explanation.txt",
+                mime="text/plain"
+            )
 elif menu == "AI Chat":
     st.header("💬 AI Chat")
     st.info("Coming in the next step.")
