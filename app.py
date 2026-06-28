@@ -1,4 +1,5 @@
 import streamlit as st
+init_db()
 from modules.pdf_reader import extract_pdf_text
 from modules.docx_reader import extract_docx_text
 from modules.utils import extract_txt_text
@@ -167,6 +168,7 @@ elif menu == "AI Summary":
                 )
 
                 st.session_state["summary"] = summary
+                save_history("Summary Generated", summary)
 
         if "summary" in st.session_state:
 
@@ -195,6 +197,7 @@ elif menu == "Simplify":
                 )
 
                 st.session_state["simplified"] = simplified
+               save_history("Document Simplified", simplified) 
 
         if "simplified" in st.session_state:
 
@@ -227,6 +230,7 @@ elif menu == "Clause Explanation":
                 )
 
                 st.session_state["clause_explanation"] = explanation
+                save_history("Clause Explanation Generated", explanation)
 
         if "clause_explanation" in st.session_state:
 
@@ -262,6 +266,8 @@ elif menu == "AI Chat":
 
             with st.spinner("Thinking..."):
                 answer = st.session_state.rag_chat.ask(user_question)
+                save_history("Chat Question", user_question)
+save_history("Chat Answer", answer)
 
             st.markdown("### 🤖 Answer")
             st.write(answer)
@@ -296,6 +302,7 @@ elif menu == "Translate":
                 )
 
                 st.session_state["translation"] = translated
+                save_history("Translation", translated)
 
         if "translation" in st.session_state:
 
