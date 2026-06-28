@@ -196,10 +196,6 @@ elif menu == "AI Summary":
             st.markdown(st.session_state["summary"])
 
 elif menu == "Simplify":
-    st.header("✍ Simplify Legal Language")
-    st.info("Coming in the next step.")
-
-elif menu == "Simplify":
 
     st.header("✍️ Simplify Legal Document")
 
