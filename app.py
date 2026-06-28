@@ -5,6 +5,9 @@ from modules.utils import extract_txt_text
 from modules.summarizer import summarize_document
 from modules.simplifier import simplify_document
 from modules.clause_explainer import explain_clauses
+from modules.rag_chat import LegalRAGChat
+from modules.translator import translate_text
+from modules.history import init_db, save_history, get_history
 
 # -----------------------------
 # Page Configuration
@@ -238,16 +241,88 @@ elif menu == "Clause Explanation":
                 mime="text/plain"
             )
 elif menu == "AI Chat":
-    st.header("💬 AI Chat")
-    st.info("Coming in the next step.")
+
+    st.header("💬 AI Chat (Ask about your document)")
+
+    if "document_text" not in st.session_state:
+        st.warning("Please upload a document first.")
+
+    else:
+
+        # Initialize RAG system once
+        if "rag_chat" not in st.session_state:
+            with st.spinner("Preparing AI brain..."):
+                st.session_state.rag_chat = LegalRAGChat(
+                    st.session_state["document_text"]
+                )
+
+        user_question = st.text_input("Ask a question about your document")
+
+        if st.button("Ask AI") and user_question:
+
+            with st.spinner("Thinking..."):
+                answer = st.session_state.rag_chat.ask(user_question)
+
+            st.markdown("### 🤖 Answer")
+            st.write(answer)
 
 elif menu == "Translate":
-    st.header("🌍 Translate")
-    st.info("Coming in the next step.")
+
+    st.header("🌍 Translate Document")
+
+    if "document_text" not in st.session_state:
+        st.warning("Please upload a document first.")
+
+    else:
+
+        text_to_translate = st.text_area(
+            "Text to Translate",
+            st.session_state["document_text"],
+            height=300
+        )
+
+        language = st.selectbox(
+            "Select Language",
+            ["English", "Hindi", "Marathi", "Urdu", "Gujarati", "Bengali"]
+        )
+
+        if st.button("Translate"):
+
+            with st.spinner("Translating..."):
+
+                translated = translate_text(
+                    text_to_translate,
+                    language
+                )
+
+                st.session_state["translation"] = translated
+
+        if "translation" in st.session_state:
+
+            st.markdown("### 🌍 Translated Output")
+            st.write(st.session_state["translation"])
+
+            st.download_button(
+                "📥 Download Translation",
+                st.session_state["translation"],
+                file_name=f"translation_{language}.txt",
+                mime="text/plain"
+            )
 
 elif menu == "History":
-    st.header("🕒 History")
-    st.info("Coming in the next step.")
+
+    st.header("🕒 Activity History")
+
+    history = get_history()
+
+    if not history:
+        st.info("No history found.")
+    else:
+        for row in history:
+            st.write(f"**{row[1]}**")
+            st.write(row[2])
+            st.caption(row[3])
+            st.divider()
 
 elif menu == "About":
     st.header("ℹ️ About")
