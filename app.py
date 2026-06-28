@@ -269,10 +269,9 @@ elif menu == "AI Chat":
 
     else:
 
-        # Initialize RAG system once
         if "rag_chat" not in st.session_state:
             with st.spinner("Preparing AI brain..."):
-                st.session_state.rag_chat = LegalRAGChat(
+                st.session_state["rag_chat"] = LegalRAGChat(
                     st.session_state["document_text"]
                 )
 
@@ -281,9 +280,10 @@ elif menu == "AI Chat":
         if st.button("Ask AI") and user_question:
 
             with st.spinner("Thinking..."):
-                answer = st.session_state.rag_chat.ask(user_question)
-                save_history("Chat Question", user_question)
-save_history("Chat Answer", answer)
+                answer = st.session_state["rag_chat"].ask(user_question)
+
+            save_history("Chat Question", user_question)
+            save_history("Chat Answer", answer)
 
             st.markdown("### 🤖 Answer")
             st.write(answer)
