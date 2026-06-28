@@ -1,4 +1,7 @@
 import streamlit as st
+from modules.pdf_reader import extract_pdf_text
+from modules.docx_reader import extract_docx_text
+from modules.utils import extract_txt_text
 
 # -----------------------------
 # Page Configuration
@@ -101,14 +104,41 @@ elif menu == "Upload Document":
     st.header("📄 Upload Legal Document")
 
     uploaded_file = st.file_uploader(
-        "Choose a document",
+        "Upload a PDF, DOCX, or TXT file",
         type=["pdf", "docx", "txt"]
     )
 
-    if uploaded_file:
-        st.success("File uploaded successfully!")
-        st.write("Filename:", uploaded_file.name)
-        st.write("File Type:", uploaded_file.type)
+    if uploaded_file is not None:
+
+        with st.spinner("Reading document..."):
+
+            file_extension = uploaded_file.name.split(".")[-1].lower()
+
+            if file_extension == "pdf":
+                extracted_text = extract_pdf_text(uploaded_file)
+
+            elif file_extension == "docx":
+                extracted_text = extract_docx_text(uploaded_file)
+
+            elif file_extension == "txt":
+                extracted_text = extract_txt_text(uploaded_file)
+
+            else:
+                extracted_text = "Unsupported file format."
+
+        st.success("✅ Document uploaded successfully!")
+
+        st.session_state["document_text"] = extracted_text
+
+        st.subheader("📑 Extracted Text")
+
+        st.text_area(
+            "Document Content",
+            extracted_text,
+            height=350
+        )
+
+        st.info(f"Total Characters: {len(extracted_text)}")
 
 # -----------------------------
 # Placeholder Pages
