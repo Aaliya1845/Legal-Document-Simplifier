@@ -200,7 +200,6 @@ elif menu == "Simplify":
     st.header("✍️ Simplify Legal Document")
 
     if "document_text" not in st.session_state:
-
         st.warning("Please upload a document first.")
 
     else:
@@ -214,7 +213,7 @@ elif menu == "Simplify":
                 )
 
                 st.session_state["simplified"] = simplified
-               save_history("Document Simplified", simplified) 
+                save_history("Document Simplified", simplified)
 
         if "simplified" in st.session_state:
 
