@@ -1,24 +1,24 @@
-"""
-Simple SQLite history tracker
-"""
-
 import sqlite3
+import os
 from datetime import datetime
 
-DB_PATH = "database/history.db"
+# Create database folder if it doesn't exist
+os.makedirs("database", exist_ok=True)
+
+DB_PATH = os.path.join("database", "history.db")
 
 
 def init_db():
     conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
+    cursor = conn.cursor()
 
-    c.execute("""
-        CREATE TABLE IF NOT EXISTS history (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            action TEXT,
-            content TEXT,
-            timestamp TEXT
-        )
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS history (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        action TEXT,
+        content TEXT,
+        timestamp TEXT
+    )
     """)
 
     conn.commit()
@@ -27,12 +27,12 @@ def init_db():
 
 def save_history(action, content):
     conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
+    cursor = conn.cursor()
 
-    c.execute("""
-        INSERT INTO history (action, content, timestamp)
-        VALUES (?, ?, ?)
-    """, (action, content, datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+    cursor.execute(
+        "INSERT INTO history (action, content, timestamp) VALUES (?, ?, ?)",
+        (action, content, datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    )
 
     conn.commit()
     conn.close()
@@ -40,11 +40,10 @@ def save_history(action, content):
 
 def get_history():
     conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
+    cursor = conn.cursor()
 
-    c.execute("SELECT * FROM history ORDER BY id DESC")
-
-    rows = c.fetchall()
+    cursor.execute("SELECT * FROM history ORDER BY id DESC")
+    rows = cursor.fetchall()
 
     conn.close()
     return rows
