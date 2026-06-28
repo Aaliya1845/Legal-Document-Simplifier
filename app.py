@@ -2,6 +2,7 @@ import streamlit as st
 from modules.pdf_reader import extract_pdf_text
 from modules.docx_reader import extract_docx_text
 from modules.utils import extract_txt_text
+from modules.summarizer import summarize_document
 
 # -----------------------------
 # Page Configuration
@@ -144,8 +145,27 @@ elif menu == "Upload Document":
 # Placeholder Pages
 # -----------------------------
 elif menu == "AI Summary":
+
     st.header("📖 AI Summary")
-    st.info("Coming in the next step.")
+
+    if "document_text" not in st.session_state:
+        st.warning("Please upload a document first.")
+
+    else:
+
+        if st.button("Generate Summary"):
+
+            with st.spinner("Generating AI Summary..."):
+
+                summary = summarize_document(
+                    st.session_state["document_text"]
+                )
+
+                st.session_state["summary"] = summary
+
+        if "summary" in st.session_state:
+
+            st.markdown(st.session_state["summary"])
 
 elif menu == "Simplify":
     st.header("✍ Simplify Legal Language")
