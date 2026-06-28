@@ -1,4 +1,29 @@
 import streamlit as st
+st.markdown("""
+<style>
+.main-title {
+    font-size: 44px;
+    font-weight: 800;
+    color: #1E88E5;
+    text-align: center;
+}
+
+.subtitle {
+    text-align: center;
+    color: gray;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.block {
+    background-color: #f7f9fc;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #e0e0e0;
+}
+</style>
+""", unsafe_allow_html=True)
 init_db()
 from modules.pdf_reader import extract_pdf_text
 from modules.docx_reader import extract_docx_text
@@ -68,40 +93,36 @@ menu = st.sidebar.radio(
 # -----------------------------
 if menu == "Home":
 
-    st.markdown('<p class="main-title">⚖️ Legal Document Simplifier</p>', unsafe_allow_html=True)
+    st.markdown('<div class="main-title">⚖ Legal Document Simplifier AI</div>', unsafe_allow_html=True)
 
-    st.markdown(
-        '<p class="sub-title">Understand complex legal documents in plain language using AI.</p>',
-        unsafe_allow_html=True
-    )
+    st.markdown('<div class="subtitle">Upload • Understand • Simplify • Chat • Translate</div>', unsafe_allow_html=True)
 
     st.divider()
 
-    col1, col2 = st.columns(2)
+    st.markdown("### 🚀 Features")
 
-    with col1:
-        st.markdown("### 🚀 Features")
-        st.success("✔ Upload PDF/DOCX/TXT")
-        st.success("✔ AI Summary")
-        st.success("✔ Simplify Legal Language")
-        st.success("✔ Explain Clauses")
-        st.success("✔ AI Chat")
-        st.success("✔ Translate")
-        st.success("✔ Download Results")
+    st.markdown("""
+    <div class="block">
+    ✔ Upload PDF, DOCX, TXT<br>
+    ✔ AI Summary<br>
+    ✔ Legal Language Simplifier<br>
+    ✔ Clause Explanation<br>
+    ✔ AI Chat (RAG-based)<br>
+    ✔ Translation<br>
+    ✔ History Tracking
+    </div>
+    """, unsafe_allow_html=True)
 
-    with col2:
-        st.info(
-            """
-            **How it works**
+    st.markdown("### 🧠 How it works")
 
-            1. Upload your legal document.
-            2. AI extracts the text.
-            3. Generate a summary.
-            4. Simplify difficult legal terms.
-            5. Ask questions about the document.
-            6. Download the results.
-            """
-        )
+    st.markdown("""
+    <div class="block">
+    1. Upload your legal document<br>
+    2. AI extracts and understands it<br>
+    3. Ask questions or simplify content<br>
+    4. Download results anytime
+    </div>
+    """, unsafe_allow_html=True)
 
 # -----------------------------
 # Upload
