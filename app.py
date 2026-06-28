@@ -24,7 +24,6 @@ st.markdown("""
 }
 </style>
 """, unsafe_allow_html=True)
-init_db()
 from modules.pdf_reader import extract_pdf_text
 from modules.docx_reader import extract_docx_text
 from modules.utils import extract_txt_text
@@ -34,6 +33,7 @@ from modules.clause_explainer import explain_clauses
 from modules.rag_chat import LegalRAGChat
 from modules.translator import translate_text
 from modules.history import init_db, save_history, get_history
+init_db()
 
 # -----------------------------
 # Page Configuration
