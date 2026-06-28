@@ -1,27 +1,194 @@
 import streamlit as st
+st.set_page_config(
+    page_title="⚖ Legal Document Simplifier AI",
+    page_icon="⚖",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
+
 st.markdown("""
 <style>
-.main-title {
-    font-size: 44px;
-    font-weight: 800;
-    color: #1E88E5;
-    text-align: center;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+html, body, [class*="css"]{
+    font-family:'Poppins',sans-serif;
 }
 
-.subtitle {
-    text-align: center;
-    color: gray;
-    font-size: 18px;
-    margin-bottom: 20px;
+/* Beautiful Background */
+.stApp{
+
+background:
+radial-gradient(circle at top left,#d9f3ff 0%,transparent 35%),
+radial-gradient(circle at top right,#fff5b8 0%,transparent 30%),
+radial-gradient(circle at bottom right,#dff7ff 0%,transparent 35%),
+linear-gradient(135deg,#edfaff,#ffffff);
+
+background-attachment:fixed;
 }
 
-.block {
-    background-color: #f7f9fc;
-    padding: 15px;
-    border-radius: 12px;
-    margin-bottom: 10px;
-    border: 1px solid #e0e0e0;
+/* Sidebar */
+
+[data-testid="stSidebar"]{
+
+background:rgba(255,255,255,.72);
+
+backdrop-filter:blur(20px);
+
+border-right:1px solid rgba(255,255,255,.5);
+
 }
+
+/* Cards */
+
+.card{
+
+background:rgba(255,255,255,.75);
+
+padding:25px;
+
+border-radius:22px;
+
+backdrop-filter:blur(20px);
+
+box-shadow:0 15px 40px rgba(0,0,0,.08);
+
+margin-bottom:25px;
+
+transition:.35s;
+
+}
+
+.card:hover{
+
+transform:translateY(-6px);
+
+box-shadow:0 20px 45px rgba(30,136,229,.18);
+
+}
+
+/* Main Heading */
+
+.main-title{
+
+font-size:52px;
+
+font-weight:800;
+
+background:linear-gradient(90deg,#1976D2,#00BCD4);
+
+-webkit-background-clip:text;
+
+-webkit-text-fill-color:transparent;
+
+text-align:center;
+
+}
+
+/* Subtitle */
+
+.subtitle{
+
+text-align:center;
+
+font-size:18px;
+
+color:#555;
+
+margin-bottom:30px;
+
+}
+
+/* Upload Area */
+
+.upload-box{
+
+padding:45px;
+
+border-radius:25px;
+
+background:linear-gradient(135deg,#eef8ff,#fffde7);
+
+border:3px dashed #64B5F6;
+
+text-align:center;
+
+}
+
+/* Buttons */
+
+.stButton>button{
+
+width:100%;
+
+padding:14px;
+
+border-radius:15px;
+
+font-size:17px;
+
+font-weight:700;
+
+background:linear-gradient(90deg,#1976D2,#42A5F5);
+
+color:white;
+
+border:none;
+
+transition:.3s;
+
+}
+
+.stButton>button:hover{
+
+transform:scale(1.03);
+
+}
+
+/* Text Area */
+
+textarea{
+
+border-radius:15px !important;
+
+}
+
+/* Success */
+
+.stSuccess{
+
+border-radius:15px;
+
+}
+
+/* Metric Card */
+
+.metric{
+
+background:white;
+
+padding:20px;
+
+border-radius:20px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+text-align:center;
+
+}
+
+/* Footer */
+
+.footer{
+
+text-align:center;
+
+color:gray;
+
+padding-top:40px;
+
+}
+
 </style>
 """, unsafe_allow_html=True)
 from modules.pdf_reader import extract_pdf_text
